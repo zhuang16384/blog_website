@@ -1,5 +1,5 @@
 @use "@picocss/pico/scss" with (
-  $theme-color: "jade",
+  $theme-color: "pumpkin",
   $modules: (
     // Deactivate some form css
     "forms/basics": false,
@@ -19,3 +19,202 @@
     "components/tooltip": false,
   )
 );
+
+@use "@picocss/pico/scss/colors" as colors;
+
+// Override the .secondary class to use Slate colors for buttons/tags
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --pico-secondary: #{colors.$slate-550};
+  --pico-secondary-hover: #{colors.$slate-650};
+  --pico-secondary-focus: rgba(#{colors.$slate-400}, 0.5);
+  --pico-secondary-inverse: #fff;
+}
+
+[data-theme="dark"] {
+  --pico-secondary: #{colors.$slate-350};
+  --pico-secondary-hover: #{colors.$slate-250};
+  --pico-secondary-focus: rgba(#{colors.$slate-350}, 0.375);
+  --pico-secondary-inverse: #fff;
+}
+
+/* -------------------------------------
+ * Ultra-Premium Typography & Layout
+ * (Modern, Silicon Valley Aesthetic)
+ * ------------------------------------- */
+
+// Global Font & Rhythm Refinements
+:root {
+  --pico-font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --pico-line-height: 1.65;
+}
+
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  // A premium soft off-white background (like Vercel/Stripe)
+  --pico-background-color: #fafafa;
+  // Pure white for cards to pop out from the background
+  --pico-card-background-color: #ffffff;
+  // Elegant, large soft shadow for the main article block
+  --pico-card-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --pico-muted-border-color: #f1f3f5;
+}
+
+[data-theme="dark"] {
+  // Deep, rich dark mode backgrounds (not pure black, but very dark grey/blue)
+  --pico-background-color: #09090b;
+  --pico-card-background-color: #111113;
+  --pico-card-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --pico-muted-border-color: #27272a;
+}
+
+// Ensure the main intro article (like "About") looks like a pristine, elevated card
+main > article:first-of-type {
+  border: 1px solid var(--pico-muted-border-color);
+  box-shadow: var(--pico-card-box-shadow);
+  border-radius: calc(var(--pico-border-radius) * 2);
+  padding: 2.5rem; // Give it room to breathe
+  
+  // Make the header inside the card borderless and clean
+  header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 1.5rem;
+    
+    h1 {
+      font-size: 2.5rem;
+      letter-spacing: -0.03em;
+    }
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em; // Tighter, modern headings
+  font-weight: 700;
+}
+
+// 1. Navigation: Pill-shaped, buttery smooth transitions
+nav ul li a {
+  color: var(--pico-muted-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 99px; // Pill shape
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: transparent;
+
+  &:hover,
+  &[aria-current="page"] {
+    color: var(--pico-h1-color);
+    background-color: var(--pico-secondary-focus);
+    transform: translateY(-1px);
+  }
+}
+
+// 2. Interactive Cards (Recent Posts): Layered shadows and micro-interactions
+.grid article {
+  position: relative;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: calc(var(--pico-border-radius) * 1.5);
+  background: var(--pico-card-background-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.005);
+    border-color: var(--pico-primary-focus);
+    // Layered, smooth shadow for a "floating" effect
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 0 0 1px var(--pico-primary-focus);
+    
+    h3 a {
+      color: var(--pico-primary);
+      &::after {
+        transform: translateX(6px);
+        opacity: 1;
+      }
+    }
+  }
+
+  // Ensure content stays above the absolute link overlay
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  h3 {
+    margin-bottom: 0.25rem;
+  }
+
+  h3 a {
+    color: var(--pico-h1-color);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+    
+    // Spread clickable area over the entire card
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    
+    // Animated Arrow Indicator
+    &::after {
+      content: "→";
+      font-weight: 500;
+      font-family: monospace;
+      color: var(--pico-primary);
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
+
+  // Refine muted meta-text (dates, descriptions)
+  hgroup p {
+    font-size: 0.875rem;
+    color: var(--pico-muted-color);
+    margin-bottom: 1rem;
+  }
+}
+
+// 3. List Links (Blog Index): Understated animated underline
+a.contrast {
+  text-decoration: none;
+  background-image: linear-gradient(var(--pico-muted-border-color), var(--pico-muted-border-color));
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+
+  &:hover {
+    color: var(--pico-primary);
+    background-image: linear-gradient(var(--pico-primary), var(--pico-primary));
+    background-size: 100% 2px;
+  }
+}
+
+// 4. Inline Paragraph Links: The "Highlight Fill" effect
+p a:not(.contrast):not(.secondary) {
+  color: var(--pico-h1-color);
+  font-weight: 500;
+  text-decoration: none;
+  // Creates a subtle line that fills up like a highlighter on hover
+  box-shadow: inset 0 -2px 0 var(--pico-primary-focus);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0 0.1em;
+  
+  &:hover {
+    color: var(--pico-primary-inverse); // Turns text white/black
+    background-color: var(--pico-primary);
+    box-shadow: inset 0 -1.5em 0 var(--pico-primary); // Fills background
+    border-radius: 2px;
+  }
+}
