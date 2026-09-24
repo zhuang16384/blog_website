@@ -13,17 +13,17 @@
     "format": "prettier './src/**/*' --write"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.7",
-    "@astrojs/rss": "^4.0.17",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/rss": "^4.0.19",
     "@picocss/pico": "^2.1.1",
-    "astro": "^6.0.2",
-    "sharp": "^0.34.5",
-    "typescript": "^5.9.3"
+    "astro": "^7.3.4",
+    "sharp": "^0.35.4",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "prettier": "~3.8.1",
-    "prettier-plugin-astro": "^0.14.1",
-    "sass": "^1.97.3"
+    "prettier": "~3.9.9",
+    "prettier-plugin-astro": "^1.0.1",
+    "sass": "^1.105.0"
   },
   "devEngines": {
     "runtime": {
