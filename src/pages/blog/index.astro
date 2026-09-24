@@ -30,28 +30,26 @@ posts.forEach((post) => {
         <p>Things I write</p>
       </hgroup>
     </header>
-    {
-      Object.keys(postByYear)
-        .sort((a, b) => parseInt(b) - parseInt(a))
-        .map((year) => (
-          <section id={year}>
-            <h2>{year}</h2>
-            <ul>
-              {postByYear[parseInt(year)].map((post: Post) => (
-                <li>
-                  <span>
-                    <FormattedDate date={post.data.date} />
-                  </span>
-                  &#8195;
-                  <a href={`/blog/${post.id}`} class="contrast">
-                    {post.data.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-    }
+    {Object.keys(postByYear)
+      .sort((a, b) => parseInt(b) - parseInt(a))
+      .map((year) => (
+        <section id={year}>
+          <h2>{year}</h2>
+          <ul>
+            {postByYear[parseInt(year)].map((post: Post) => (
+              <li>
+                <span>
+                  <FormattedDate date={post.data.date} />
+                </span>
+                &#8195;
+                <a href={`/blog/${post.id}`} class="contrast">
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
   </article>
 </Base>
 <style>

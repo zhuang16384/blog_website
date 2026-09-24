@@ -12,20 +12,18 @@ const recentPosts = posts.slice(0, maxPostsToDisplay);
 <section>
   <h3>Recent posts</h3>
   <div class="grid">
-    {
-      recentPosts.map((post) => (
-        <article>
-          <hgroup>
-            <h3>
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            </h3>
-            <p>
-              <FormattedDate date={post.data.date} />
-            </p>
-          </hgroup>
-          <p>{post.data.description}</p>
-        </article>
-      ))
-    }
+    {recentPosts.map((post) => (
+      <article>
+        <hgroup>
+          <h3>
+            <a href={`/blog/${post.id}`}>{post.data.title}</a>
+          </h3>
+          <p>
+            <FormattedDate date={post.data.date} />
+          </p>
+        </hgroup>
+        <p>{post.data.description}</p>
+      </article>
+    ))}
   </div>
 </section>
