@@ -2,24 +2,14 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer>
+<footer class="site-footer">
   <p>&copy; {currentYear} Zhuang</p>
-  <nav>
+  <nav aria-label="Footer">
     <ul>
       <li>
-        <a href="/about">GitHub</a>
+        <a href="https://github.com/zhuang16384">GitHub</a>
       </li>
-      <li>
-        <a href="/blog">Astro</a>
-      </li>
-      {/* Add other navbar entries here */}
+      {/* Add other footer entries here */}
     </ul>
   </nav>
 </footer>
-{/* CSS required to keep footer at the bottom of the page */}
-<style>
-  footer {
-    position: sticky;
-    top: 100vh;
-  }
-</style>

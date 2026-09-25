@@ -27,16 +27,17 @@ type Post = CollectionEntry<"blog">;
   title={("Posts tagged with " + tag) as string}
   description={(("Posts tagged with " + tag) as string) + "."}
 >
-  <h2>
-    Posts tagged with <span> {tag}</span>:
-  </h2>
-  <ul>
+  <p class="annotation">Posts tagged with</p>
+  <h1>
+    <span class="marker">#{tag}</span>
+  </h1>
+  <ul class="post-list">
     {posts.map((post: Post) => (
       <li>
-        <span>
-          <FormattedDate date={post.data.date} />
-        </span>
-        <a href={`/blog/${post.id}`}>{post.data.title}</a>
+        <FormattedDate date={post.data.date} />
+        <a href={`/blog/${post.id}`} class="post-title">
+          {post.data.title}
+        </a>
       </li>
     ))}
   </ul>

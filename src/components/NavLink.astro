@@ -1,9 +1,10 @@
 ---
 const { path } = Astro.props;
-const pathname = new URL(Astro.request.url).pathname;
-const currentPath = pathname.slice(1); // remove the first "/"
+// Trim slashes so "/blog", "/blog/" and "blog" compare equal
+const currentPath = Astro.url.pathname.replace(/^\/+|\/+$/g, "");
+const isCurrent = currentPath === path || currentPath.startsWith(`${path}/`);
 ---
 
-<a href={`/${path}`} aria-current={currentPath === path ? "page" : undefined}>
+<a href={`/${path}`} aria-current={isCurrent ? "page" : undefined}>
   <slot />
 </a>

@@ -9,14 +9,16 @@ const { title, date, tags } = Astro.props;
 ---
 
 <article>
-  <header>
+  <header class="post-header">
     <h1>{title}</h1>
     <FormattedDate date={date} />
   </header>
-  <slot />
+  <div class="prose">
+    <slot />
+  </div>
 
   {tags && (
-    <footer>
+    <footer class="post-footer">
       <h4>Tags</h4>
       <TagList tags={tags} />
     </footer>

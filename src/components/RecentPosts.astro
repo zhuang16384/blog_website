@@ -10,20 +10,32 @@ const recentPosts = posts.slice(0, maxPostsToDisplay);
 ---
 
 <section>
-  <h3>Recent posts</h3>
-  <div class="grid">
+  <p class="annotation">
+    Recent posts
+    <svg
+      width="48"
+      height="28"
+      viewBox="0 0 48 28"
+      fill="none"
+      stroke-width="2"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <path d="M4 4 C20 4 34 10 40 24"></path>
+      <path d="M40 24 L32 20 M40 24 L42 15"></path>
+    </svg>
+  </p>
+  <ul class="cards">
     {recentPosts.map((post) => (
-      <article>
-        <hgroup>
+      <li>
+        <article class="card">
+          <FormattedDate date={post.data.date} />
           <h3>
             <a href={`/blog/${post.id}`}>{post.data.title}</a>
           </h3>
-          <p>
-            <FormattedDate date={post.data.date} />
-          </p>
-        </hgroup>
-        <p>{post.data.description}</p>
-      </article>
+          {post.data.description && <p>{post.data.description}</p>}
+        </article>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>

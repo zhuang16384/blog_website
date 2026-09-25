@@ -24,6 +24,20 @@ const {
   <link rel="icon" type="image/svg+xml" href={siteConfig.favicon} />
   <meta name="generator" content={Astro.generator} />
   <link rel="canonical" href={canonicalURL} />
+  {/* Fonts: Virgil (hand-drawn, self-hosted) + Nunito (body) */}
+  <link
+    rel="preload"
+    href="/fonts/Virgil-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;0,800;1,400&display=swap"
+  />
   {/* Primary Meta Tags */}
   <title>{title}</title>
   <meta name="title" content={title} />

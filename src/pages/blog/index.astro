@@ -2,6 +2,7 @@
 import Base from "@layouts/Base.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import FormattedDate from "@components/FormattedDate.astro";
+import TagList from "@components/TagList.astro";
 
 type Post = CollectionEntry<"blog">;
 
@@ -23,38 +24,24 @@ posts.forEach((post) => {
 ---
 
 <Base title="Blog" description="List of blog posts">
-  <article>
-    <header>
-      <hgroup>
-        <h1>Blog</h1>
-        <p>Things I write</p>
-      </hgroup>
-    </header>
-    {Object.keys(postByYear)
-      .sort((a, b) => parseInt(b) - parseInt(a))
-      .map((year) => (
-        <section id={year}>
-          <h2>{year}</h2>
-          <ul>
-            {postByYear[parseInt(year)].map((post: Post) => (
-              <li>
-                <span>
-                  <FormattedDate date={post.data.date} />
-                </span>
-                &#8195;
-                <a href={`/blog/${post.id}`} class="contrast">
-                  {post.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
-  </article>
+  <h1>Blog</h1>
+  <p class="annotation">Things I write</p>
+  {Object.keys(postByYear)
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .map((year) => (
+      <section id={year}>
+        <h2>{year}</h2>
+        <ul class="post-list">
+          {postByYear[parseInt(year)].map((post: Post) => (
+            <li>
+              <FormattedDate date={post.data.date} />
+              <a href={`/blog/${post.id}`} class="post-title">
+                {post.data.title}
+              </a>
+              {post.data.tags && <TagList tags={post.data.tags} />}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
 </Base>
-<style>
-  span {
-    display: inline-block;
-    min-width: 10ch;
-  }
-</style>

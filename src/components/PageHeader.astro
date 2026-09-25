@@ -2,21 +2,20 @@
 import NavLink from "./NavLink.astro";
 ---
 
-<header>
+<header class="site-header">
+  <a href="/" class="brand">
+    Zhuang's Blog
+  </a>
   <nav aria-label="Main">
     <ul>
       <li>
-        <a href="/">
-          <strong>Zhuang's Blog</strong>
-        </a>
+        <NavLink path="blog">Blog</NavLink>
       </li>
-    </ul>
-    <ul>
+      <li>
+        <NavLink path="tags">Tags</NavLink>
+      </li>
       <li>
         <NavLink path="about">About</NavLink>
-      </li>
-      <li>
-        <NavLink path="blog">Blog</NavLink>
       </li>
       {/* Add other navbar entries here */}
     </ul>

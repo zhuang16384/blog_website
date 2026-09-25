@@ -1,234 +1,506 @@
-@use "@picocss/pico/scss" with (
-  $theme-color: "pumpkin",
-  $modules: (
-    // Deactivate some form css
-    "forms/basics": false,
-    "forms/checkbox-radio-switch": false,
-    "forms/input-color": false,
-    "forms/input-date": false,
-    "forms/input-file": false,
-    "forms/input-range": false,
-    "forms/input-search": false,
-    // Deactivate some component css
-    "components/accordion": false,
-    "components/dropdown": false,
-    "components/group": false,
-    "components/loading": false,
-    "components/modal": false,
-    "components/progress": false,
-    "components/tooltip": false,
-  )
-);
-
-@use "@picocss/pico/scss/colors" as colors;
-
-// Override the .secondary class to use Slate colors for buttons/tags
-[data-theme="light"],
-:root:not([data-theme="dark"]) {
-  --pico-secondary: #{colors.$slate-550};
-  --pico-secondary-hover: #{colors.$slate-650};
-  --pico-secondary-focus: rgba(#{colors.$slate-400}, 0.5);
-  --pico-secondary-inverse: #fff;
-}
-
-[data-theme="dark"] {
-  --pico-secondary: #{colors.$slate-350};
-  --pico-secondary-hover: #{colors.$slate-250};
-  --pico-secondary-focus: rgba(#{colors.$slate-350}, 0.375);
-  --pico-secondary-inverse: #fff;
-}
-
 /* -------------------------------------
- * Ultra-Premium Typography & Layout
- * (Modern, Silicon Valley Aesthetic)
+ * Notebook theme
+ * Grid paper + Excalidraw-style hand-drawn strokes
  * ------------------------------------- */
 
-// Global Font & Rhythm Refinements
+@font-face {
+  font-family: "Virgil";
+  src: url("/fonts/Virgil-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+// Irregular corner radii make a plain border look hand-drawn
+$sketch-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+$sketch-radius-alt: 15px 255px 15px 225px / 225px 15px 255px 15px;
+
+@mixin sketch-box($radius: $sketch-radius) {
+  border: 2px solid var(--ink);
+  border-radius: $radius;
+}
+
+// Diagonal hatching, like Excalidraw's "hachure" fill
+@mixin hachure($color) {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    $color 0 2px,
+    transparent 2px 9px
+  );
+}
+
 :root {
-  --pico-font-family-sans-serif:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  --pico-line-height: 1.65;
+  --paper: #fdfcf9;
+  --grid-minor: rgba(30, 30, 30, 0.028);
+  --grid-major: rgba(30, 30, 30, 0.045);
+  --ink: #1e1e1e;
+  --muted: #6b675e;
+  --faint: #a8a292;
+  --accent: #6965db;
+  --accent-hover: #4a47b1;
+  --marker: #ffec99;
+  --fill-violet: rgba(105, 101, 219, 0.28);
+  --fill-blue: #d0ebff;
+
+  --font-hand: "Virgil", "Segoe Print", "Comic Sans MS", cursive;
+  --font-body:
+    "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Noto Sans CJK SC", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  color-scheme: light dark;
 }
 
-[data-theme="light"],
-:root:not([data-theme="dark"]) {
-  // A premium soft off-white background (like Vercel/Stripe)
-  --pico-background-color: #fafafa;
-  // Pure white for cards to pop out from the background
-  --pico-card-background-color: #ffffff;
-  // Elegant, large soft shadow for the main article block
-  --pico-card-box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --pico-muted-border-color: #f1f3f5;
-}
-
-[data-theme="dark"] {
-  // Deep, rich dark mode backgrounds (not pure black, but very dark grey/blue)
-  --pico-background-color: #09090b;
-  --pico-card-background-color: #111113;
-  --pico-card-box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-  --pico-muted-border-color: #27272a;
-}
-
-// Ensure the main intro article (like "About") looks like a pristine, elevated card
-main > article:first-of-type {
-  border: 1px solid var(--pico-muted-border-color);
-  box-shadow: var(--pico-card-box-shadow);
-  border-radius: calc(var(--pico-border-radius) * 2);
-  padding: 2.5rem; // Give it room to breathe
-
-  // Make the header inside the card borderless and clean
-  header {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 1.5rem;
-
-    h1 {
-      font-size: 2.5rem;
-      letter-spacing: -0.03em;
-    }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #151515;
+    --grid-minor: rgba(255, 255, 255, 0.03);
+    --grid-major: rgba(255, 255, 255, 0.055);
+    --ink: #e3e3e8;
+    --muted: #a3a09a;
+    --faint: #6d6a64;
+    --accent: #a8a5ff;
+    --accent-hover: #cdcbff;
+    --marker: rgba(250, 210, 80, 0.3);
+    --fill-violet: rgba(168, 165, 255, 0.3);
+    --fill-blue: rgba(77, 171, 247, 0.18);
   }
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px;
+  background-attachment: fixed;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 2rem;
+}
+
+main {
+  flex-grow: 1;
+  padding: 3rem 0 4rem;
 }
 
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
-  letter-spacing: -0.02em; // Tighter, modern headings
-  font-weight: 700;
+h4 {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 2rem 0 1rem;
 }
 
-// 1. Navigation: Pill-shaped, buttery smooth transitions
-nav ul li a {
-  color: var(--pico-muted-color);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 99px; // Pill shape
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  background-color: transparent;
-
-  &:hover,
-  &[aria-current="page"] {
-    color: var(--pico-h1-color);
-    background-color: var(--pico-secondary-focus);
-    transform: translateY(-1px);
-  }
+h1 {
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  margin-top: 0;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.2rem;
 }
 
-// 2. Interactive Cards (Recent Posts): Layered shadows and micro-interactions
-.grid article {
-  position: relative;
-  border: 1px solid var(--pico-muted-border-color);
-  border-radius: calc(var(--pico-border-radius) * 1.5);
-  background: var(--pico-card-background-color);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
+p,
+ul,
+ol {
+  margin: 0 0 1.25rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
 
   &:hover {
-    transform: translateY(-4px) scale(1.005);
-    border-color: var(--pico-primary-focus);
-    // Layered, smooth shadow for a "floating" effect
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.05),
-      0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 0 0 1px var(--pico-primary-focus);
+    color: var(--accent-hover);
+  }
+}
 
-    h3 a {
-      color: var(--pico-primary);
-      &::after {
-        transform: translateX(6px);
-        opacity: 1;
-      }
-    }
+:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 3px;
+}
+
+hr {
+  border: none;
+  height: 12px;
+  margin: 2.5rem 0;
+  // Wavy pen line
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='12'%3E%3Cpath d='M0 6 Q10 1 20 6 T40 6' fill='none' stroke='%23a8a292' stroke-width='1.5'/%3E%3C/svg%3E")
+    repeat-x center;
+}
+
+.hand {
+  font-family: var(--font-hand);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+// Highlighter stroke behind text
+.marker {
+  background: linear-gradient(
+    100deg,
+    transparent 2%,
+    var(--marker) 4%,
+    var(--marker) 96%,
+    transparent 98%
+  );
+  background-size: 100% 55%;
+  background-position: 0 85%;
+  background-repeat: no-repeat;
+  padding: 0 0.2em;
+}
+
+/* ---------- Header / nav / footer ---------- */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  .brand {
+    font-family: var(--font-hand);
+    font-size: 1.6rem;
+    color: var(--ink);
+    text-decoration: none;
   }
 
-  // Ensure content stays above the absolute link overlay
-  > * {
-    position: relative;
-    z-index: 2;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    display: inline-block;
+    font-family: var(--font-hand);
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.35rem 0.8rem;
+    border: 2px solid transparent;
+    border-radius: $sketch-radius;
+
+    &:hover {
+      border-color: var(--ink);
+    }
+
+    &[aria-current="page"] {
+      @include sketch-box;
+      @include hachure(var(--fill-violet));
+    }
+  }
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px dashed var(--faint);
+  font-family: var(--font-hand);
+  color: var(--muted);
+
+  p {
+    margin: 0;
+  }
+
+  ul {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: var(--muted);
+    &:hover {
+      color: var(--ink);
+    }
+  }
+}
+
+/* ---------- Home ---------- */
+
+.intro {
+  position: relative;
+  margin-bottom: 3rem;
+
+  .lead {
+    font-size: 1.35rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+}
+
+.annotation {
+  font-family: var(--font-hand);
+  color: var(--accent);
+  font-size: 1.15rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+
+  svg {
+    flex-shrink: 0;
+    stroke: currentColor;
+  }
+}
+
+/* ---------- Post lists ---------- */
+
+.post-list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+
+  > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.5rem;
+    row-gap: 0.25rem;
+    padding: 1rem 0;
+    border-bottom: 1.5px solid var(--ink);
+  }
+
+  time {
+    font-family: var(--font-hand);
+    color: var(--muted);
+    min-width: 7.5rem;
+  }
+
+  .post-title {
+    flex: 1 1 16rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+// Hand-drawn card grid used on the home page
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li:nth-child(even) .card {
+    border-radius: $sketch-radius-alt;
+    transform: rotate(0.6deg);
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  padding: 1.25rem 1.4rem;
+  background-color: var(--paper);
+  @include sketch-box;
+  transform: rotate(-0.5deg);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: rotate(0deg) translateY(-2px);
+    @include hachure(var(--fill-blue));
+  }
+
+  time {
+    font-family: var(--font-hand);
+    color: var(--muted);
+    font-size: 0.95rem;
   }
 
   h3 {
-    margin-bottom: 0.25rem;
+    margin: 0;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1.3rem;
   }
 
+  // Stretch the title link over the whole card
   h3 a {
-    color: var(--pico-h1-color);
+    color: var(--ink);
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: color 0.3s ease;
 
-    // Spread clickable area over the entire card
-    &::before {
+    &::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: 1;
-    }
-
-    // Animated Arrow Indicator
-    &::after {
-      content: "→";
-      font-weight: 500;
-      font-family: monospace;
-      color: var(--pico-primary);
-      opacity: 0;
-      transform: translateX(-10px);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
   }
 
-  // Refine muted meta-text (dates, descriptions)
-  hgroup p {
-    font-size: 0.875rem;
-    color: var(--pico-muted-color);
-    margin-bottom: 1rem;
+  p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
   }
 }
 
-// 3. List Links (Blog Index): Understated animated underline
-a.contrast {
+/* ---------- Tags ---------- */
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  color: var(--ink);
   text-decoration: none;
-  background-image: linear-gradient(
-    var(--pico-muted-border-color),
-    var(--pico-muted-border-color)
-  );
-  background-position: 0% 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 1px;
-  transition:
-    background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.3s ease;
+  padding: 0.15rem 0.75rem;
+  border: 1.5px solid var(--ink);
+  border-radius: $sketch-radius-alt;
 
   &:hover {
-    color: var(--pico-primary);
-    background-image: linear-gradient(var(--pico-primary), var(--pico-primary));
-    background-size: 100% 2px;
+    color: var(--ink);
+    @include hachure(var(--fill-violet));
   }
 }
 
-// 4. Inline Paragraph Links: The "Highlight Fill" effect
-p a:not(.contrast):not(.secondary) {
-  color: var(--pico-h1-color);
-  font-weight: 500;
-  text-decoration: none;
-  // Creates a subtle line that fills up like a highlighter on hover
-  box-shadow: inset 0 -2px 0 var(--pico-primary-focus);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 0 0.1em;
+/* ---------- Article ---------- */
 
-  &:hover {
-    color: var(--pico-primary-inverse); // Turns text white/black
-    background-color: var(--pico-primary);
-    box-shadow: inset 0 -1.5em 0 var(--pico-primary); // Fills background
-    border-radius: 2px;
+.post-header {
+  margin-bottom: 2.5rem;
+
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  time {
+    font-family: var(--font-hand);
+    color: var(--muted);
+  }
+}
+
+.prose {
+  h1 {
+    font-size: 2.2rem;
+    margin-top: 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    @include sketch-box;
+  }
+
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.25rem;
+    color: var(--muted);
+    @include sketch-box($sketch-radius-alt);
+    border-style: dashed;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    background: var(--marker);
+    border-radius: 4px;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    line-height: 1.5;
+    @include sketch-box;
+
+    code {
+      padding: 0;
+      background: none;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1.5px solid var(--ink);
+  }
+}
+
+.post-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px dashed var(--faint);
+
+  h4 {
+    margin: 0 0 0.75rem;
   }
 }
